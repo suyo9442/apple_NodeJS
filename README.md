@@ -224,6 +224,119 @@ app.post('/add', function (요청, 응답) {
     - SQL 언어 사용
     - MySQL, MariaDB, Oracle, MS SQL Server
 
-2. NoSQ
+2. NoSQL
     - JS OBJ랑 유사
     - Dynamo, Oracle NoSQL, MonggoDB, Redis, Cassandra
+
+<br>
+
+### MongoDB 셋팅하기
+1. 가입 후 DB 생성
+2. `connect` => 주소 받아오기
+3. 터미널에서 설치
+
+```javascript
+const MongoClient = require('mongodb').MongoClient;
+
+MongoClient.connect('mongodb+srv://admin:581583tntn^^M@cluster0.jhxqo.mongodb.net/?retryWrites=true&w=majority', function (에러, client) {
+
+    // 잘 연결되었는지 터미널에서 확인
+    app.listen(8080, function () {
+        console.log('listening on 8080')
+    });
+
+})
+```
+
+4. 성공!
+<img src="mongoDB.png" width="400px">
+
+
+<br>
+    
+
+***
+
+<br>
+
+## level2_2: Database에 자료 저장하는 법 (한줄이면 끝)
+
+### 에러 처리하기
+- `if (에러) { return console.log(에러) }
+`
+```javascript
+const MongoClient = require('mongodb').MongoClient;
+MongoClient.connect('mongodb+srv://<suyo9442>:<581583tntn^^M>@cluster0.jhxqo.mongodb.net/?retryWrites=true&w=majority', function (에러, client) {
+    // 에러가 발생하면
+    if (에러) { return console.log(에러) }
+
+    app.listen(8080, function () {
+        console.log('listening on 8080')
+    });
+})
+```
+
+<br>
+
+### DB에 자료 저장하기
+1. collection 만들기
+2. 접근할 DB 명시 👉 `db = client.db('ToDoApp');`
+3. 접근할 collection 명시 👉 `db.collection('post').insertOne()`
+4. 데이터는 `OBJ`형식으로 작성
+    - 데이터마다 `__id`를 부여해야함
+
+
+```javascript
+const MongoClient = require('mongodb').MongoClient;
+
+var db;
+
+MongoClient.connect('mongodb+srv://admin:581583tntn^^M@cluster0.jhxqo.mongodb.net/?retryWrites=true&w=majority', function (에러, client) {
+    // 에러가 발생하면
+    if (에러) { return console.log(에러) }
+
+    // 접근할 DB연결
+    db = client.db('ToDoApp');
+
+    // 접근할 collection연결
+    db.collection('post').insertOne({ 이름: 'John', 나이: 20, _id: 100 }, function (에러, 결과) {
+        console.log('저장완료');
+    });
+
+    // DB에 연결
+    app.listen(8080, function () {
+        console.log('listening on 8080')
+    });
+})
+```
+
+<br>
+    
+
+***
+
+<br>
+
+## level2_3: HTML에 DB데이터 꽂아넣는 법 1 (EJS)
+### 전송하면 input데이터를 DB에 저장하기
+
+### HTML에 데이터 꽂는 방법
+1. 데이터를 꽂아줄 html파일 생성 👉 `list.html`
+
+2. EJS 세팅
+    - 터미널 install
+    - `app.set('view engine', 'ejs')`
+    - list.html 👉 `list.ejs`로 변경
+    - list.ejs를 `views` 폴더에 넣기
+> HTML을 쉽게 쓸 수 있도록 도와주는 라이브러리
+
+3. /list로 접속하면 ejs보여주기 👉 `render`
+
+```javascript
+app.get('/list', function (요청, 응답) {
+    응답.render('list.ejs')
+});
+```
+
+
+
